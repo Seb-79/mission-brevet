@@ -1,0 +1,11 @@
+{
+  "name": "mission-brevet",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Jeu de révision du brevet des collèges 2027, univers escalade",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check js/logic.js && node --check js/questions.js && node --check js/app.js",
+    "verify": "npm run check && npm test"
+  }
+}

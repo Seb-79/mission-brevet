@@ -1,0 +1,297 @@
+/* Mission Brevet — univers « salle d'escalade » :
+   mur ardoise à inserts, prises en résine colorées, magnésie blanche. */
+
+:root {
+  --mur: #33415A;
+  --mur-fonce: #26324A;
+  --insert: rgba(255, 255, 255, 0.16);
+  --page: #E9EDF1;
+  --carte: #FFFFFF;
+  --encre: #1C2433;
+  --encre-douce: #556176;
+  --trait: #CDD5DF;
+  --jaune: #F4CE14;
+  --magenta: #E2397F;
+  --cyan: #16A9CC;
+  --orange: #FF7A21;
+  --vert: #3DBE6B;
+  --rouge: #D7263D;
+  --ok-fond: #E3F6EA;
+  --ok-encre: #15603A;
+  --ko-fond: #FDE7EA;
+  --ko-encre: #8A1626;
+  --titre: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --texte: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --rayon: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #161C27;
+    --carte: #222B3B;
+    --encre: #EEF1F5;
+    --encre-douce: #A9B4C5;
+    --trait: #364256;
+    --ok-fond: #183A28;
+    --ok-encre: #9BE3B6;
+    --ko-fond: #431A22;
+    --ko-encre: #FFB3BE;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--encre);
+  font-family: var(--texte);
+  font-size: 17px;
+  line-height: 1.55;
+}
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+.evitement { position: absolute; left: -999px; }
+.evitement:focus { left: 16px; top: 8px; background: var(--carte); padding: 8px 12px; z-index: 20; }
+.noscript { padding: 24px; }
+
+/* ── Prise (forme organique en résine) ── */
+.prise {
+  display: inline-block;
+  width: 34px; height: 30px;
+  border-radius: 42% 58% 63% 37% / 45% 39% 61% 55%;
+  flex: none;
+}
+.prise.jaune { background: var(--jaune); }
+.prise.magenta { background: var(--magenta); }
+.prise.cyan { background: var(--cyan); }
+.prise.orange { background: var(--orange); }
+.prise.vert { background: var(--vert); }
+
+/* ── Bandeau : cotation façon panneau de salle ── */
+.bandeau:empty { display: none; }
+.bandeau {
+  background: var(--mur);
+  color: #fff;
+  padding: 12px 16px;
+}
+.bandeau-in {
+  max-width: 980px; margin: 0 auto;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.cotation-actuelle {
+  font-family: var(--titre); font-weight: 900;
+  font-size: 56px; line-height: 0.9; letter-spacing: 0.5px;
+  min-width: 2.2ch;
+}
+.bandeau-infos { flex: 1; min-width: 180px; }
+.bandeau-nom { font-family: var(--titre); font-weight: 800; font-size: 24px; line-height: 1.1; }
+.jauge { height: 10px; background: var(--mur-fonce); border-radius: 6px; overflow: hidden; margin: 6px 0 4px; }
+.jauge > span { display: block; height: 100%; background: var(--jaune); border-radius: 6px; transition: width .6s ease; }
+.bandeau-detail { font-size: 14px; color: #C9D2E0; }
+.bandeau-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.pastille {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--mur-fonce); color: #fff;
+  border-radius: 999px; padding: 6px 12px; font-size: 14px; font-weight: 700;
+}
+.bouton-bandeau {
+  background: transparent; border: 1.5px solid #6E7E99; color: #fff;
+  border-radius: 999px; padding: 6px 12px; font-size: 14px; cursor: pointer;
+}
+.bouton-bandeau:hover { border-color: #fff; }
+
+main { max-width: 980px; margin: 0 auto; padding: 20px 16px 48px; outline: none; }
+
+/* ── Écran « mur » : la topo verticale + les secteurs ── */
+.salle { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 20px; }
+.mur {
+  position: relative;
+  border-radius: var(--rayon);
+  background-color: var(--mur);
+  background-image: radial-gradient(circle, var(--insert) 1.6px, transparent 2.2px);
+  background-size: 20px 20px;
+  min-height: 560px;
+  overflow: hidden;
+}
+.mur .deco { position: absolute; transform: scale(.7); opacity: .9; }
+.mur-graduation {
+  position: absolute; left: 6px; transform: translateY(50%);
+  font-family: var(--titre); font-weight: 800; font-size: 15px;
+  color: #fff; background: rgba(0, 0, 0, .28);
+  padding: 0 6px; border-radius: 4px;
+}
+.mur-graduation.atteinte { background: var(--jaune); color: #3A2F00; }
+.corde { position: absolute; left: 66px; top: 0; width: 3px; background: repeating-linear-gradient(#F4CE14 0 8px, #E2397F 8px 16px); }
+.grimpeur {
+  position: absolute; left: 52px; transform: translateY(50%);
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #fff; color: var(--mur); border: 3px solid var(--jaune);
+  display: grid; place-items: center;
+  font-family: var(--titre); font-weight: 900; font-size: 17px;
+  transition: bottom .8s cubic-bezier(.3, 1.4, .5, 1);
+}
+
+.colonne { display: flex; flex-direction: column; gap: 14px; }
+h1, h2, h3 { font-family: var(--titre); font-weight: 800; line-height: 1.05; margin: 0; }
+h1 { font-size: 40px; }
+h2 { font-size: 28px; }
+h3 { font-size: 22px; }
+.sous-titre { color: var(--encre-douce); margin: 4px 0 0; }
+
+.secteur {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  background: var(--carte); border: 1.5px solid var(--trait);
+  border-radius: var(--rayon); padding: 14px 16px; cursor: pointer;
+  transition: transform .12s ease, border-color .12s ease;
+}
+.secteur:hover { border-color: var(--encre-douce); transform: translateX(3px); }
+.secteur .prise { width: 44px; height: 38px; }
+.secteur-texte { flex: 1; min-width: 0; }
+.secteur-nom, .secteur-matiere { display: block; }
+.secteur-nom { font-family: var(--titre); font-weight: 800; font-size: 24px; line-height: 1.1; }
+.secteur-matiere { font-size: 14px; color: var(--encre-douce); }
+.secteur-stat { font-size: 14px; color: var(--encre-douce); text-align: right; white-space: nowrap; }
+.secteur-stat strong { display: block; font-family: var(--titre); font-size: 22px; color: var(--encre); }
+.badge-double {
+  display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px;
+  background: var(--jaune); color: #3A2F00; font-size: 12px; font-weight: 700; vertical-align: 3px;
+}
+
+.carte {
+  background: var(--carte); border: 1.5px solid var(--trait);
+  border-radius: var(--rayon); padding: 16px;
+}
+.carte-verrou { border-style: dashed; color: var(--encre-douce); display: flex; gap: 14px; align-items: center; }
+.ligne-code { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.ligne-code input { flex: 1; min-width: 150px; }
+#code { text-transform: uppercase; }
+#code::placeholder { text-transform: none; }
+.message { margin: 8px 0 0; font-size: 15px; }
+.message.ok { color: var(--ok-encre); }
+.message.ko { color: var(--ko-encre); }
+
+.classement { list-style: none; margin: 10px 0 0; padding: 0; }
+.classement li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--trait); }
+.classement li:first-child { border-top: 0; }
+.classement .rang { font-family: var(--titre); font-weight: 900; font-size: 22px; width: 1.4ch; }
+.classement .qui { flex: 1; }
+.classement .cot { font-family: var(--titre); font-weight: 800; font-size: 20px; }
+.classement .moi { font-weight: 700; }
+
+/* ── Champs et boutons ── */
+input[type=text], input[inputmode] {
+  border: 2px solid var(--trait); background: var(--carte);
+  border-radius: 10px; padding: 10px 12px; min-height: 48px;
+}
+input:focus { border-color: var(--cyan); outline: none; }
+.bouton {
+  border: 0; border-radius: 999px; padding: 12px 22px; min-height: 48px;
+  font-weight: 700; cursor: pointer;
+  background: var(--encre); color: var(--page);
+}
+.bouton:hover { filter: brightness(1.15); }
+.bouton.secondaire { background: transparent; color: var(--encre); border: 2px solid var(--trait); }
+.bouton.secondaire:hover { border-color: var(--encre-douce); filter: none; }
+
+/* ── Écran « voie » : une question = une prise ── */
+.voie-entete { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.voie-entete .prise { width: 38px; height: 34px; }
+.voie-titre { flex: 1; min-width: 160px; }
+.combo { font-family: var(--titre); font-weight: 900; font-size: 22px; color: var(--magenta); }
+.prises-voie { display: flex; gap: 6px; margin: 0 0 16px; flex-wrap: wrap; }
+.prises-voie .prise { width: 24px; height: 21px; background: var(--trait); }
+.prises-voie .prise.tenue { background: var(--vert); }
+.prises-voie .prise.chute { background: var(--rouge); opacity: .55; }
+.prises-voie .prise.courante { outline: 3px solid var(--encre); outline-offset: 2px; }
+
+.chrono { height: 8px; background: var(--trait); border-radius: 6px; overflow: hidden; margin-bottom: 16px; }
+.chrono > span { display: block; height: 100%; background: var(--orange); transform-origin: left; }
+
+.question { background: var(--carte); border: 1.5px solid var(--trait); border-radius: var(--rayon); padding: 20px; }
+.question-theme { font-size: 14px; color: var(--encre-douce); margin: 0 0 4px; }
+.question-enonce { font-size: 22px; line-height: 1.4; margin: 0 0 18px; }
+.choix { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.choix button {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  background: var(--page); border: 2px solid var(--trait); border-radius: 12px;
+  padding: 10px 14px; min-height: 56px; cursor: pointer; font-size: 18px;
+}
+.choix button:hover:not(:disabled) { border-color: var(--encre-douce); }
+.choix button .prise { width: 30px; height: 26px; display: grid; place-items: center; font-family: var(--titre); font-weight: 900; font-size: 16px; color: #1C2433; }
+.choix button.bonne { border-color: var(--vert); background: var(--ok-fond); color: var(--ok-encre); }
+.choix button.mauvaise { border-color: var(--rouge); background: var(--ko-fond); color: var(--ko-encre); }
+.choix button:disabled { cursor: default; }
+.saisie { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.saisie input { flex: 1; min-width: 140px; font-size: 20px; }
+.saisie .unite { font-size: 18px; color: var(--encre-douce); }
+.erreur-saisie { color: var(--ko-encre); font-size: 14px; margin: 6px 0 0; }
+.outils { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.indice { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: var(--page); border-left: 5px solid var(--jaune); }
+
+.retour {
+  margin-top: 16px; padding: 16px; border-radius: var(--rayon);
+}
+.retour.ok { background: var(--ok-fond); color: var(--ok-encre); }
+.retour.ko { background: var(--ko-fond); color: var(--ko-encre); }
+.retour-titre { font-family: var(--titre); font-weight: 900; font-size: 28px; line-height: 1.05; margin: 0; }
+.retour p { margin: 6px 0 0; }
+.retour .solution { color: var(--encre); background: var(--carte); border-radius: 10px; padding: 10px 12px; margin-top: 10px; }
+.retour .bouton { margin-top: 12px; }
+
+/* ── Bilan de voie ── */
+.bilan-chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
+.chiffre { background: var(--carte); border: 1.5px solid var(--trait); border-radius: var(--rayon); padding: 14px; }
+.chiffre strong { display: block; font-family: var(--titre); font-weight: 900; font-size: 40px; line-height: 1; }
+.chiffre span { font-size: 14px; color: var(--encre-douce); }
+.liste-chutes { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 10px; }
+.liste-chutes li { background: var(--carte); border: 1.5px solid var(--trait); border-radius: 12px; padding: 12px 14px; }
+.liste-chutes .q { font-weight: 700; }
+.liste-chutes p { margin: 2px 0; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+
+/* ── Écran de choix du grimpeur ── */
+.accueil { max-width: 560px; margin: 24px auto 0; }
+.accueil h1 { font-size: 64px; }
+.profils { display: grid; gap: 10px; margin: 18px 0; }
+
+/* ── Fête : nuage de magnésie au passage de cotation ── */
+.fete { position: fixed; inset: 0; pointer-events: none; display: grid; place-items: center; z-index: 30; }
+.fete-texte {
+  font-family: var(--titre); font-weight: 900; text-align: center;
+  color: var(--mur); background: #fff; border-radius: 24px; padding: 18px 32px;
+  border: 4px solid var(--jaune);
+  animation: monte 2.6s ease forwards;
+}
+.fete-texte strong { display: block; font-size: 96px; line-height: .9; }
+.fete-texte span { font-size: 24px; }
+.poussiere { position: fixed; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px rgba(51, 65, 90, .12); animation: nuage 1.4s ease-out forwards; }
+@keyframes monte { 0% { transform: scale(.6); opacity: 0; } 15% { transform: scale(1.05); opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
+@keyframes nuage { to { transform: translate(var(--dx), var(--dy)) scale(2.4); opacity: 0; } }
+.secoue { animation: secoue .35s; }
+@keyframes secoue { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .fete-texte { opacity: 1; }
+}
+
+/* ── Téléphone ── */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .cotation-actuelle { font-size: 44px; }
+  .salle { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; }
+  .mur-graduation { font-size: 13px; left: 3px; padding: 0 4px; }
+  .corde { left: 44px; }
+  .grimpeur { left: 32px; width: 28px; height: 28px; font-size: 15px; }
+  .secteur { padding: 12px; gap: 10px; }
+  .secteur .prise { width: 34px; height: 30px; }
+  .secteur-nom { font-size: 21px; }
+  .secteur-desc { display: none; }
+  .question { padding: 16px; }
+  .question-enonce { font-size: 19px; }
+  h1 { font-size: 34px; }
+  .accueil h1 { font-size: 52px; }
+  .fete-texte strong { font-size: 72px; }
+}
