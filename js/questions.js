@@ -208,13 +208,17 @@
   qcm(S, TE, 'Quel matériau est un bon conducteur électrique ?', ['Le cuivre', 'Le bois', 'Le plastique', 'Le verre'], 'Il est dans les câbles électriques.', 'Les métaux comme le cuivre conduisent le courant ; bois, plastique et verre sont isolants.');
   qcm(S, TE, 'Dans le cycle de vie d’un objet, le recyclage intervient…', ['En fin de vie', 'À la conception', 'Pendant la fabrication uniquement', 'Pendant la publicité'], 'Quand l’objet n’est plus utilisé.', 'Cycle de vie : extraction des matières, fabrication, transport, utilisation, fin de vie (recyclage).');
 
-  // Codes secrets imprimés dans le corrigé du sujet papier n°1, rangés par note.
+  // Codes secrets imprimés dans les corrigés des sujets papier, rangés par sujet puis par note.
   // Seule l'empreinte est stockée (voir Logique.empreinte), pas le code en clair.
   const CODES_PAPIER = [
-    { empreinte: '18q8qb', bonus: 150, nom: 'Sujet papier n°1 (moins de 8/20)' },
-    { empreinte: '18fgw0w', bonus: 250, nom: 'Sujet papier n°1 (8 à 11,5/20)' },
-    { empreinte: 'oq3gea', bonus: 350, nom: 'Sujet papier n°1 (12 à 15,5/20)' },
-    { empreinte: '1ouo0w7', bonus: 500, nom: 'Sujet papier n°1 (16/20 et plus)' },
+    { sujet: 1, empreinte: '18q8qb', bonus: 150, nom: 'Sujet papier n°1 (moins de 8/20)' },
+    { sujet: 1, empreinte: '18fgw0w', bonus: 250, nom: 'Sujet papier n°1 (8 à 11,5/20)' },
+    { sujet: 1, empreinte: 'oq3gea', bonus: 350, nom: 'Sujet papier n°1 (12 à 15,5/20)' },
+    { sujet: 1, empreinte: '1ouo0w7', bonus: 500, nom: 'Sujet papier n°1 (16/20 et plus)' },
+    { sujet: 2, empreinte: 'kxgfwo', bonus: 200, nom: 'Sujet papier n°2 (moins de 8/20)' },
+    { sujet: 2, empreinte: 'o4mp55', bonus: 300, nom: 'Sujet papier n°2 (8 à 11,5/20)' },
+    { sujet: 2, empreinte: 'yfpp4h', bonus: 450, nom: 'Sujet papier n°2 (12 à 15,5/20)' },
+    { sujet: 2, empreinte: 'hk225s', bonus: 600, nom: 'Sujet papier n°2 (16/20 et plus)' },
   ];
 
   const exports = { QUESTIONS, ZONES, CODES_PAPIER };

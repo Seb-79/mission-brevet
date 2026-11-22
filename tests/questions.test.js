@@ -56,16 +56,21 @@ test('sciences : les 3 matières sont couvertes (au moins 8 chacune)', () => {
   }
 });
 
-test('codes papier : 4 paliers, bonus croissants, aucun code en clair', () => {
-  assert.equal(CODES_PAPIER.length, 4);
-  const bonus = CODES_PAPIER.map((c) => c.bonus);
-  assert.deepEqual([...bonus].sort((a, b) => a - b), bonus);
+test('codes papier : 4 paliers par sujet, bonus croissants, aucun code en clair', () => {
+  for (const sujet of [1, 2]) {
+    const codes = CODES_PAPIER.filter((c) => c.sujet === sujet);
+    assert.equal(codes.length, 4, 'sujet ' + sujet);
+    const bonus = codes.map((c) => c.bonus);
+    assert.deepEqual([...bonus].sort((a, b) => a - b), bonus);
+  }
   for (const c of CODES_PAPIER) assert.ok(!('code' in c));
 });
 
-test('codes papier : les codes imprimés dans le corrigé sont reconnus', () => {
-  for (const code of ['PRISE-24', 'DEGAINE-58', 'RELAIS-93', 'SOMMET-46']) {
+test('codes papier : les codes imprimés dans les corrigés sont reconnus', () => {
+  const imprimes = ['PRISE-24', 'DEGAINE-58', 'RELAIS-93', 'SOMMET-46', 'BLOC-31', 'DALLE-67', 'DEVERS-82', 'CRUX-15'];
+  for (const code of imprimes) {
     assert.equal(L.validerCode(code, CODES_PAPIER, []).ok, true, code);
   }
   assert.equal(L.validerCode('SOMMET-47', CODES_PAPIER, []).ok, false);
+  assert.equal(L.validerCode('CRUX-16', CODES_PAPIER, []).ok, false);
 });
